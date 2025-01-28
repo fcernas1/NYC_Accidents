@@ -13,6 +13,10 @@ This data analysis project aims to identify trends and patterns of NYC Traffic C
 ### Data Sources
 This data set was 
 
+Given the original dataset had 2,000,000+ rows, creating a Entity Relationship Diagram was necessary to shorten the execution fo queries in PostgreSQL. Executing queries using only relevant queries significantly shortened the time needed to create queries, in addition to the use of Common Table Expressions(CTEs). 
+![image](https://github.com/user-attachments/assets/ba126c91-ff51-4f77-8ee2-ba1da2630e0b)
+
+
 ### Tools
 - Draw.io - Creating Entity Relationship Diagram (ERD)
 - SQL - Data Cleaning
