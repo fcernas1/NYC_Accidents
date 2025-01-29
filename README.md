@@ -203,28 +203,41 @@ SET vehicle1factor = cte.vehicle1factor,
 FROM cte_factors AS cte
 WHERE factors.collisionID = cte.collisionID;
 ```
-Thankfully, columns within the 'Casualties' table were straightforward and denoted injuries and fatalities for each collision. The rest of the columns were now cleaned and ready for data analysis and visualization in Tableau
+Thankfully, columns within the 'Casualties' table were straightforward and denoted injuries and fatalities for each collision. The rest of the columns in the tables 'Crashes', 'Factors', and 'Vehicles' were now cleaned and ready for data analysis and visualization in Tableau. Values from all these tables were added to a single csv file titled 'transformed_nyc_accidents' and imported into Tableau
+
 
 ### Exploratory Data Analysis (EDA)
-- What are the most common crashes in New York City?
-``` sql
-SELECT Vehicle1Factor, Vehicle2Factor, SUM(people_injured) AS total_injured, SUM(people_killed) AS total_killed
-FROM transformed_nycaccidents
-WHERE vehicle1factor <> 'Unspecified/Other' AND vehicle1factor <> 'Unspecified/Other'
-  AND vehicle1factor <> 'No data' AND vehicle1factor <> 'No data'
-  AND vehicle2factor <> 'Unspecified/Other' AND vehicle1factor <> 'Unspecified/Other'
-  AND vehicle2factor <> 'No data' AND vehicle1factor <> 'No data'
-GROUP BY Vehicle1Factor, Vehicle2Factor
-ORDER BY SUM(people_injured) DESC, SUM(people_killed) DESC;
-```
-- Have there been any major changes in the number of crashes over time?
-- Which types of crashes cause the most injuries/deaths? Who is the most vulnerable?
-- Which part of New York City has the most crashes?
+***Have there been any major changes in the number of crashes over time? Is there a trend in the number of crashes over any given year?***
 
+![image](https://github.com/user-attachments/assets/11c1913f-a4b5-46d3-a862-f674c2d5bd67)
 
-### Results/Findings
-1. The most common insight was that collisions reached an all-time low during the COVID-19 Lockdowns (~March 2020).
+From the created Tableau dashboard seen above, the 'Collisions Over Time' Section shows that collisions in New York City show a similar trend throughout each year between 2012-2024. That is, February typically has the lowest amount of collisions, and there is a slow buildup in the number of collisions up until May-June, until it tapers off for the rest of the year.
 
-### Limitations
-Regarding the Tableau dashboard, it is important to remember the HeatMap is for collisions for 2+ Vehicles. It would have been overwhelming to include a heatmap and/or filters for 5 different vehicle contributing factors, even more so when we consider a majority of collisions don't involve more than 3 vehicles. 
-While many observations without their designated zipcode and/or borough were assigned so through the use of Python's GeoPandas library, there is still an extensive amount of rows with missing values.
+It is also important to note that from 2012-2024, New York City reached an all-time low in the number of collisions in April 2020 with only 4,129 crashes. This is likely due to the rise of COVID-19 cases and the impending lockdown. Since then, the number of collisions month-to-month are significantly down and not similar to that between the years 2012-2019.
+
+***What are the most common crashes in New York City?***
+
+![image](https://github.com/user-attachments/assets/457eeb79-3d03-4c1c-8c15-24cedf9dcd7a)
+
+Disregarding 'Unspecified/Other' and 'No data' values for vehicle type and contributing factor, we see for vehicles involving 2+ vehicles the most common reasons for a collision are as a result of Distractions and Traffic Violations. In addition, Human Error is a common factor, which includes: unsafe maneuvers, road-rage, tailgating, etc.. 
+
+The heatmap also shows rare occurances for collisions between 2+ vehicles. It's rare for collisions to be caused by defective vehicles, and interestingly there are thousands of collisions where the environment (slippery roads, improper lane markings, etc) was a contributing factor
+
+***Which part of New York City has the most crashes***
+Due to the sheer amount of collisions that the table contained, it was increasingly difficult to display the geographic columns into Tableau without overcrowding the worksheet. Therefore, I created a simple barplot to get an idea of which boroughs had the most crashes, as seen below.
+
+![image](https://github.com/user-attachments/assets/284ff53d-fc5b-42f3-8e93-507da27f3e80)
+
+From this barplot, it's easily seen Brooklyn and Queens have a significant amount of crashes with over 400,000 collisions respectively. Meanwhile, Manhattan has nearly 300,000 collisions, and the rest of the boroughs have greater than or equal to ~200,000 collisions.
+
+***Which types of crashes cause the most injuries/deaths? Who is the most vulnerable?***
+
+For this question, the interactive Tableau Dashboard was most effective. Utilizing the filters, I made the following insights:
+- Collisions involving Alchohol have the highest fatality rate
+![image](https://github.com/user-attachments/assets/9bd762b8-0068-42a1-b5fd-f8571eab9436)
+
+- Cyclists are susceptible to crashes where the contributing factor was 'Distraction/Inattention' and 'Traffic Violation'.
+![image](https://github.com/user-attachments/assets/12d9721b-ce93-4c26-b3f9-2d09582e8750)
+
+- Pedestrians injuries/deaths aren't common with the created categories
+After trying to find insights into pedestrian injuries/deaths, it become readily apparent pedestrians aren't injured in any specific car crash type. Once I changed the filter to 'Unspecified', the distribution of pedestrians injured increased significantly. Thus, I came to the realization pedestrians are injured in car crashes with unspecified contributing factors
