@@ -1,11 +1,11 @@
-# NYC Accidents
+# NYC Accidents - Exploratory Data Analysis
 
 ## Table of Contents
 - [Project Overview](#project-overview)
+- [Data Sources](#data-sources)
 - [Data Preparation](#data-preparation)
-- [Exploratory Data Analysis (EDA)](#exploratory-data-analysis-(eda))
-- [Results](#results/findings)
-- [Limitations](#limitations)
+- [Exploratory Data Analysis](#exploratory-data-analysis)
+
 
 ### Project Overview
 This data analysis project aims to identify trends and patterns of NYC Traffic Collisions from 2014-2024. By analyzing the contributing factors for each crash, the location (borough) of the collisions, and the significant trends over time, this project aims find different solutions to preventing accidents in New York City.
@@ -13,7 +13,8 @@ This data analysis project aims to identify trends and patterns of NYC Traffic C
 ### Data Sources
 This data set titled 'Motor Vehicle Collisions-Crashes" taken from [data.gov](data.gov), published by New York City agencies and updated every day. At the time of download, the file had over 2,000,000 rows of collision data starting from July 2012, and ending in December of 2024.
 
-Given the original dataset had 2,000,000+ rows, creating a Entity Relationship Diagram was optimal to shorten the execution fo queries in PostgreSQL. Executing queries using only relevant tables significantly shortened the time needed to create queries, in addition to the use of Common Table Expressions(CTEs). 
+Given the original dataset had 2,000,000+ rows, creating a Entity Relationship Diagram was optimal to shorten the execution fo queries in PostgreSQL. Executing queries using only relevant tables significantly shortened the time needed to create queries, in addition to the use of Common Table Expressions(CTEs)
+
 ![image](https://github.com/user-attachments/assets/ba126c91-ff51-4f77-8ee2-ba1da2630e0b)
 
 After cleaning the data set using PostgreSQL, the final dataset was exported as a CSV file and used in Tableau.
@@ -24,7 +25,7 @@ After cleaning the data set using PostgreSQL, the final dataset was exported as 
 - Python - GIS mapping
 - Tableau - Data Visualization
 
-### Data Preparation (in PostgreSQL)
+### Data Preparation
 ***Handling Missing Values for Location Based Columns***
 
 Many of the rows for columns 'Borough', 'Zipcode', 'Latitude', and 'Longitude' had missing values. After a quick query in PostgreSQL, I significant amount of rows had both Latitude and Longitude, but still didn't have a designated zipcode or borough. Thus, I decided to use Python to map locations to add missing values. Below is the full code:
@@ -206,7 +207,7 @@ WHERE factors.collisionID = cte.collisionID;
 Thankfully, columns within the 'Casualties' table were straightforward and denoted injuries and fatalities for each collision. The rest of the columns in the tables 'Crashes', 'Factors', and 'Vehicles' were now cleaned and ready for data analysis and visualization in Tableau. Values from all these tables were added to a single csv file titled 'transformed_nyc_accidents' and imported into Tableau
 
 
-### Exploratory Data Analysis (EDA)
+### Exploratory Data Analysis
 ***Have there been any major changes in the number of crashes over time? Is there a trend in the number of crashes over any given year?***
 
 ![image](https://github.com/user-attachments/assets/11c1913f-a4b5-46d3-a862-f674c2d5bd67)
@@ -233,11 +234,18 @@ From this barplot, it's easily seen Brooklyn and Queens have a significant amoun
 ***Which types of crashes cause the most injuries/deaths? Who is the most vulnerable?***
 
 For this question, the interactive Tableau Dashboard was most effective. Utilizing the filters, I made the following insights:
-- Collisions involving Alchohol have the highest fatality rate
+- Collisions involving Alchohol/Drugs have the highest fatality rate
+
 ![image](https://github.com/user-attachments/assets/9bd762b8-0068-42a1-b5fd-f8571eab9436)
 
-- Cyclists are susceptible to crashes where the contributing factor was 'Distraction/Inattention' and 'Traffic Violation'.
+By far, a collision involving alchohol/drugs had the highest fatality rate when compared with other crash types
+
+- Cyclists are susceptible to crashes where the contributing factor was 'Distraction/Inattention' and 'Traffic Violation'
+
 ![image](https://github.com/user-attachments/assets/12d9721b-ce93-4c26-b3f9-2d09582e8750)
 
+Collisions with these contributing factors have a high concentration of injuries for cyclists, indicated by the Distribution Table in Tableau
+
 - Pedestrians injuries/deaths aren't common with the created categories
+ 
 After trying to find insights into pedestrian injuries/deaths, it become readily apparent pedestrians aren't injured in any specific car crash type. Once I changed the filter to 'Unspecified', the distribution of pedestrians injured increased significantly. Thus, I came to the realization pedestrians are injured in car crashes with unspecified contributing factors
